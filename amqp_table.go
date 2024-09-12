@@ -8,28 +8,7 @@ import (
 	"time"
 )
 
-func writeTable(table map[string]any) ([]byte, error) {
-	buf := new(bytes.Buffer)
-	writer := bufio.NewWriter(buf)
-
-	for key, value := range table {
-		writeShortstr(writer, key)
-		writeFieldValue(writer, value)
-	}
-	writer.Flush()
-
-	msgBody := buf.Bytes()
-	length := int32(len(msgBody))
-	lengthBuf := new(bytes.Buffer)
-	lengthWriter := bufio.NewWriter(lengthBuf)
-
-	binary.Write(lengthWriter, binary.BigEndian, length)
-	lengthWriter.Flush()
-	lengthBytes := lengthBuf.Bytes()
-	return append(lengthBytes, msgBody...), nil
-}
-
-func readTable(data []byte) (map[string]any, error) {
+func ReadTable(data []byte) (map[string]any, error) {
 	byteReader := bytes.NewReader(data)
 	reader := bufio.NewReader(byteReader)
 
@@ -53,6 +32,27 @@ func readTable(data []byte) (map[string]any, error) {
 		}
 	}
 	return table, nil
+}
+
+func WriteTable(table map[string]any) ([]byte, error) {
+	buf := new(bytes.Buffer)
+	writer := bufio.NewWriter(buf)
+
+	for key, value := range table {
+		writeShortstr(writer, key)
+		writeFieldValue(writer, value)
+	}
+	writer.Flush()
+
+	msgBody := buf.Bytes()
+	length := int32(len(msgBody))
+	lengthBuf := new(bytes.Buffer)
+	lengthWriter := bufio.NewWriter(lengthBuf)
+
+	binary.Write(lengthWriter, binary.BigEndian, length)
+	lengthWriter.Flush()
+	lengthBytes := lengthBuf.Bytes()
+	return append(lengthBytes, msgBody...), nil
 }
 
 func writeShortstr(writer *bufio.Writer, str string) error {

@@ -33,7 +33,7 @@ func (e *InvalidMarshalError) Error() string {
 }
 
 func Unmarshal(data []byte, v any) error {
-	table, err := readTable(data)
+	table, err := ReadTable(data)
 	if err != nil {
 		return err
 	}
@@ -46,7 +46,7 @@ func Marshal(v any) ([]byte, error) {
 		return nil, err
 	}
 
-	return writeTable(table)
+	return WriteTable(table)
 }
 
 func unmarshalFromTable(table map[string]any, v any) error {
