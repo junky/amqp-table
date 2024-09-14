@@ -67,7 +67,7 @@ func unmarshalFromTable(table map[string]any, v any) error {
 		}
 
 		if value, ok := table[jsonTag]; ok {
-			if err := setField(field, value); err != nil {
+			if err := setField(jsonTag, field, value); err != nil {
 				return err
 			}
 		}
@@ -99,97 +99,97 @@ func marshalToTable(v any) (map[string]any, error) {
 	return table, nil
 }
 
-func setField(field reflect.Value, value interface{}) error {
+func setField(fieldName string, field reflect.Value, value interface{}) error {
 	switch field.Kind() {
 	case reflect.Int8:
 		if v, ok := value.(int8); ok {
 			field.SetInt(int64(v))
 		} else {
-			return fmt.Errorf("expected int8, got %T", value)
+			return fmt.Errorf("%s: expected int8, got %T", fieldName, value)
 		}
 	case reflect.Int16:
 		if v, ok := value.(int16); ok {
 			field.SetInt(int64(v))
 		} else {
-			return fmt.Errorf("expected int16, got %T", value)
+			return fmt.Errorf("%s: expected int16, got %T", fieldName, value)
 		}
 	case reflect.Int32:
 		if v, ok := value.(int32); ok {
 			field.SetInt(int64(v))
 		} else {
-			return fmt.Errorf("expected int32, got %T", value)
+			return fmt.Errorf("%s: expected int32, got %T", fieldName, value)
 		}
 	case reflect.Int64:
 		if v, ok := value.(int64); ok {
 			field.SetInt(v)
 		} else {
-			return fmt.Errorf("expected int64, got %T", value)
+			return fmt.Errorf("%s: expected int64, got %T", fieldName, value)
 		}
 	case reflect.Int:
 		if v, ok := value.(int); ok {
 			field.SetInt(int64(v))
 		} else {
-			return fmt.Errorf("expected int, got %T", value)
+			return fmt.Errorf("%s: expected int, got %T", fieldName, value)
 		}
 	case reflect.Uint8:
 		if v, ok := value.(uint8); ok {
 			field.SetUint(uint64(v))
 		} else {
-			return fmt.Errorf("expected int8, got %T", value)
+			return fmt.Errorf("%s: expected int8, got %T", fieldName, value)
 		}
 	case reflect.Uint16:
 		if v, ok := value.(uint16); ok {
 			field.SetUint(uint64(v))
 		} else {
-			return fmt.Errorf("expected int16, got %T", value)
+			return fmt.Errorf("%s: expected int16, got %T", fieldName, value)
 		}
 	case reflect.Uint32:
 		if v, ok := value.(uint32); ok {
 			field.SetUint(uint64(v))
 		} else {
-			return fmt.Errorf("expected int32, got %T", value)
+			return fmt.Errorf("%s: expected int32, got %T", fieldName, value)
 		}
 	case reflect.Uint64:
 		if v, ok := value.(uint64); ok {
 			field.SetUint(v)
 		} else {
-			return fmt.Errorf("expected uint64, got %T", value)
+			return fmt.Errorf("%s: expected uint64, got %T", fieldName, value)
 		}
 	case reflect.Uint:
 		if v, ok := value.(uint); ok {
 			field.SetUint(uint64(v))
 		} else {
-			return fmt.Errorf("expected uint, got %T", value)
+			return fmt.Errorf("%s: expected uint, got %T", fieldName, value)
 		}
 	case reflect.String:
 		if v, ok := value.(string); ok {
 			field.SetString(v)
 		} else {
-			return fmt.Errorf("expected string, got %T", value)
+			return fmt.Errorf("%s: expected string, got %T", fieldName, value)
 		}
 	case reflect.Bool:
 		if v, ok := value.(bool); ok {
 			field.SetBool(v)
 		} else {
-			return fmt.Errorf("expected bool, got %T", value)
+			return fmt.Errorf("%s: expected bool, got %T", fieldName, value)
 		}
 	case reflect.Float32:
 		if v, ok := value.(float32); ok {
 			field.SetFloat(float64(v))
 		} else {
-			return fmt.Errorf("expected float32, got %T", value)
+			return fmt.Errorf("%s: expected float32, got %T", fieldName, value)
 		}
 	case reflect.Float64:
 		if v, ok := value.(float64); ok {
 			field.SetFloat(v)
 		} else {
-			return fmt.Errorf("expected float64, got %T", value)
+			return fmt.Errorf("%s: expected float64, got %T", fieldName, value)
 		}
 	case reflect.Slice:
 		if v, ok := value.([]byte); ok {
 			field.SetBytes(v)
 		} else {
-			return fmt.Errorf("expected []byte for slice, got %T", value)
+			return fmt.Errorf("%s: expected []byte for slice, got %T", fieldName, value)
 		}
 	}
 	return nil
