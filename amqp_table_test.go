@@ -1,6 +1,7 @@
 package amqptable
 
 import (
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -58,4 +59,23 @@ func TestWriteTable(t *testing.T) {
 	}
 
 	assert.Equal(t, expectedData, data)
+}
+
+func TestReadTableFromFile(t *testing.T) {
+	data, err := os.ReadFile("msg.bin")
+	if err != nil {
+		t.Fatalf("Failed to read msg.bin: %v", err)
+	}
+
+	table, err := ReadTable(data)
+	if err != nil {
+		t.Fatalf("Failed to read table: %v", err)
+	}
+
+	expectedTable := map[string]any{
+		"name": "topic",
+		"age":  int32(30),
+	}
+
+	assert.Equal(t, expectedTable, table)
 }
