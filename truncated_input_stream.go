@@ -25,7 +25,7 @@ func (t *TruncatedInputStream) Read(p []byte) (n int, err error) {
 		return 0, io.EOF
 	}
 
-	n, err = t.Reader.Read(p)
+	n, err = io.ReadFull(t.Reader, p)
 	if err != nil {
 		return 0, err
 	}

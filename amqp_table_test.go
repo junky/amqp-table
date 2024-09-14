@@ -72,10 +72,8 @@ func TestReadTableFromFile(t *testing.T) {
 		t.Fatalf("Failed to read table: %v", err)
 	}
 
-	expectedTable := map[string]any{
-		"name": "topic",
-		"age":  int32(30),
-	}
-
-	assert.Equal(t, expectedTable, table)
+	assert.Equal(t, "topic", table["name"])
+	assert.Equal(t, int32(30), table["age"])
+	assert.Equal(t, 10000, len(table["full_text"].(string)))
+	assert.Equal(t, "aaaaa", table["full_text"].(string)[:5])
 }
