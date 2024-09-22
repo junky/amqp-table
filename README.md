@@ -30,6 +30,34 @@ import amqptable "github.com/junky/amqp-table"
 2. Use the provided functions to encode and decode AMQP tables:
 
 ```go
+// Example of encoding a Go map to an AMQP table
+
+table := map[string]any{
+    "name": "John",
+    "age":  30,
+}
+
+msgBody, err := amqptable.WriteTable(table)
+if err != nil {
+    log.Fatalf("Error encoding: %v", err)
+}
+
+// msgBody is a []byte that can be sent over AMQP
+
+// Example of decoding an AMQP table to a Go map
+var decoded map[string]any
+
+err = amqptable.ReadTable(msgBody, &decoded)
+if err != nil {
+    log.Fatalf("Error decoding: %v", err)
+}
+
+fmt.Printf("Decoded map: %+v\n", decoded)
+```
+
+3. Marshal and Unmarshal structs to and from AMQP tables:
+
+```go
 // Example of encoding a Go struct to an AMQP table
 type ExampleStruct struct {
     Name string `json:"name"`
@@ -38,15 +66,17 @@ type ExampleStruct struct {
 
 example := ExampleStruct{Name: "John", Age: 30}
 
-encoded, err := amqptable.WriteTable(example)
+msgBody, err := amqptable.Marshal(example)
 if err != nil {
     log.Fatalf("Error encoding: %v", err)
 }
 
+// msgBody is a []byte that can be sent over AMQP
+
 // Example of decoding an AMQP table to a Go struct
 var decoded ExampleStruct
 
-err = amqptable.ReadTable(encoded, &decoded)
+err = amqptable.Unmarshal(msgBody, &decoded)
 if err != nil {
     log.Fatalf("Error decoding: %v", err)
 }
@@ -56,7 +86,7 @@ fmt.Printf("Decoded struct: %+v\n", decoded)
 
 ## Documentation
 
-For detailed documentation and API reference, please visit [GoDoc](https://pkg.go.dev/github.com/yourusername/amqp-table).
+For detailed documentation and API reference, please visit [GoDoc](https://pkg.go.dev/github.com/junky/amqp-table).
 
 ## Contributing
 
